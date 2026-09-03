@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Karpenter Enterprise Limits &mdash; Cast AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bp-bg:#060B14 !important;--bp-surface:rgba(6,105,253,.08) !important;--bp-text:#FFFFFF !important;--bp-accent:#0669FD !important;--bp-accent-2:#A4FBF6 !important;--bp-muted:#5A7090 !important;--bp-accent-soft:rgba(130,194,255,.12) !important;--bp-font-display:'Space Grotesk',system-ui,sans-serif !important;--bp-font-body:'Inter',system-ui,sans-serif !important;--bp-font-mono:'JetBrains Mono',ui-monospace,monospace !important;}
+/* ============================================================
+   BetterPresentation — deck-base.css
+   Mandatory base CSS for every generated deck.
+   Inline the FULL contents of this file inside every presentation.
+   ============================================================ */
+
+/* === RESET === */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  background: #000;
+  font-family: var(--bp-font-body, 'Inter', system-ui, sans-serif);
+  color: var(--bp-text, #111111);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+img,
+svg,
+picture,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+/* === SEMANTIC TOKENS (defaults; moods override) === */
+:root {
+  --bp-bg: #ffffff;
+  --bp-surface: #f6f6f4;
+  --bp-text: #111111;
+  --bp-accent: #111111;
+  --bp-muted: #666666;
+  --bp-accent-soft: #eeeeee;
+
+  --bp-font-display: 'Fraunces', Georgia, serif;
+  --bp-font-body: 'Inter', system-ui, sans-serif;
+  --bp-font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  /* spacing scale (px) — use via calc(var(--bp-space-N) * 1px) when needed */
+  --bp-space-1: 4;
+  --bp-space-2: 8;
+  --bp-space-3: 16;
+  --bp-space-4: 24;
+  --bp-space-5: 32;
+  --bp-space-6: 48;
+  --bp-space-7: 64;
+  --bp-space-8: 96;
+  --bp-space-9: 128;
+  --bp-space-10: 192;
+}
+
+/* === VIEWPORT + STAGE === */
+.bp-viewport {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  background: #000;
+}
+
+.bp-stage {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1920px;
+  height: 1080px;
+  transform-origin: center center;
+  transform: translate(-50%, -50%) scale(1);
+  background: var(--bp-bg);
+  color: var(--bp-text);
+  overflow: hidden;
+  font-family: var(--bp-font-body);
+}
+
+/* === SLIDES === */
+.bp-slide {
+  position: absolute;
+  inset: 0;
+  width: 1920px;
+  height: 1080px;
+  padding: 96px;
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.bp-slide.active,
+.bp-slide.visible {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
+  z-index: 1;
+}
+
+/* === SLIDE GRID === */
+.bp-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 104px);
+  grid-template-rows: repeat(6, 152px);
+  gap: 48px;
+  width: 100%;
+  height: 100%;
+}
+
+/* === TYPE BASE === */
+.bp-eyebrow {
+  font-family: var(--bp-font-body);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--bp-muted);
+}
+
+.bp-title {
+  font-family: var(--bp-font-display);
+  font-size: 72px;
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  color: var(--bp-text);
+  margin: 0;
+}
+
+.bp-subhead {
+  font-family: var(--bp-font-body);
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 1.3;
+  color: var(--bp-text);
+  margin: 0;
+}
+
+.bp-body {
+  font-family: var(--bp-font-body);
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--bp-text);
+  margin: 0;
+}
+
+.bp-caption {
+  font-family: var(--bp-font-body);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--bp-muted);
+  margin: 0;
+}
+
+.bp-mono {
+  font-family: var(--bp-font-mono);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--bp-muted);
+}
+
+/* === UTILITY ALIGNMENT === */
+.bp-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.bp-stack--tight {
+  gap: 8px;
+}
+
+.bp-stack--loose {
+  gap: 48px;
+}
+
+.bp-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 24px;
+}
+
+.bp-row--between {
+  justify-content: space-between;
+}
+
+.bp-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bp-cover-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 32px;
+}
+
+.bp-rule {
+  display: block;
+  width: 64px;
+  height: 2px;
+  background: var(--bp-accent);
+  border: 0;
+  margin: 0;
+}
+
+.bp-rule--full {
+  width: 100%;
+  height: 1px;
+  background: var(--bp-muted);
+  opacity: 0.4;
+}
+
+/* === FOOTER / HEADER === */
+.bp-footer {
+  position: absolute;
+  left: 96px;
+  right: 96px;
+  bottom: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--bp-font-body);
+  font-size: 14px;
+  color: var(--bp-muted);
+}
+
+.bp-header {
+  position: absolute;
+  left: 96px;
+  right: 96px;
+  top: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--bp-font-body);
+  font-size: 14px;
+  color: var(--bp-muted);
+}
+
+.bp-page-number {
+  font-variant-numeric: tabular-nums;
+}
+
+/* === EDITABLE TEXT === */
+.bp-editable {
+  outline: none;
+  transition: background-color 120ms ease, box-shadow 120ms ease;
+}
+
+.bp-edit-mode .bp-editable {
+  cursor: text;
+}
+
+.bp-edit-mode .bp-editable:hover,
+.bp-edit-mode .bp-editable:focus {
+  background: var(--bp-accent-soft);
+  box-shadow: 0 0 0 2px var(--bp-accent);
+}
+
+.bp-edit-hotzone {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--bp-accent);
+  color: var(--bp-bg);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  cursor: pointer;
+  z-index: 100;
+  user-select: none;
+}
+
+.bp-edit-mode .bp-edit-hotzone,
+body:hover .bp-edit-hotzone {
+  display: flex;
+}
+
+/* === ANIMATION BASELINE === */
+.bp-reveal-fade,
+.bp-reveal-up,
+.bp-reveal-left,
+.bp-reveal-right,
+.bp-reveal-scale,
+.bp-reveal-blur {
+  opacity: 0;
+}
+
+.bp-reveal-fade { animation: bp-anim-fade 600ms ease forwards; }
+.bp-reveal-up   { animation: bp-anim-up   700ms cubic-bezier(0.2, 0.7, 0.2, 1) forwards; }
+.bp-reveal-left { animation: bp-anim-left 700ms cubic-bezier(0.2, 0.7, 0.2, 1) forwards; }
+.bp-reveal-right{ animation: bp-anim-right 700ms cubic-bezier(0.2, 0.7, 0.2, 1) forwards; }
+.bp-reveal-scale{ animation: bp-anim-scale 700ms cubic-bezier(0.2, 0.7, 0.2, 1) forwards; }
+.bp-reveal-blur { animation: bp-anim-blur 800ms ease forwards; }
+
+@keyframes bp-anim-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes bp-anim-up {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes bp-anim-left {
+  from { opacity: 0; transform: translateX(-32px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes bp-anim-right {
+  from { opacity: 0; transform: translateX(32px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes bp-anim-scale {
+  from { opacity: 0; transform: scale(0.94); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes bp-anim-blur {
+  from { opacity: 0; filter: blur(12px); }
+  to   { opacity: 1; filter: blur(0); }
+}
+
+/* === PROGRESS INDICATOR ===
+   Five variants for deck-position chrome.
+   The PresentationApp runtime updates these on every slidechange event.
+   Place .bp-progress inside .bp-stage but outside any .bp-slide.
+   Variant is set via data-progress-variant="bar|dots|stepper|ring|segments". */
+
+.bp-progress {
+  position: absolute;
+  left: 50%;
+  bottom: 24px;
+  transform: translateX(-50%);
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-family: var(--bp-font-mono);
+  font-size: 12px;
+  color: var(--bp-muted);
+  user-select: none;
+  pointer-events: none;
+}
+
+/* Position modifiers */
+.bp-progress--top {
+  bottom: auto;
+  top: 24px;
+}
+
+.bp-progress--corner-right {
+  left: auto;
+  right: 96px;
+  bottom: 48px;
+  transform: none;
+}
+
+.bp-progress--corner-left {
+  left: 96px;
+  right: auto;
+  bottom: 48px;
+  transform: none;
+}
+
+/* --- Variant: bar --- linear fill using scaleX --- */
+.bp-progress[data-progress-variant="bar"] {
+  gap: 12px;
+}
+
+.bp-progress-track {
+  width: 240px;
+  height: 3px;
+  background: var(--bp-accent-soft);
+  border-radius: 2px;
+  overflow: hidden;
+  position: relative;
+}
+
+.bp-progress-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--bp-accent);
+  border-radius: 2px;
+  transform-origin: left center;
+  transform: scaleX(0);
+  transition: transform 450ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.bp-progress-label {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+
+/* --- Variant: dots --- one dot per slide --- */
+.bp-progress[data-progress-variant="dots"] {
+  gap: 8px;
+}
+
+.bp-progress-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--bp-accent-soft);
+  transition: background 200ms ease, transform 200ms ease, width 200ms ease;
+  flex-shrink: 0;
+}
+
+.bp-progress-dot.is-past {
+  background: var(--bp-muted);
+}
+
+.bp-progress-dot.is-active {
+  background: var(--bp-accent);
+  width: 20px;
+  border-radius: 3px;
+}
+
+/* --- Variant: stepper --- numbered circles connected by line --- */
+.bp-progress[data-progress-variant="stepper"] {
+  gap: 0;
+}
+
+.bp-progress-stepper {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+.bp-progress-step {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.bp-progress-step-circle {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1.5px solid var(--bp-muted);
+  background: var(--bp-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--bp-font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--bp-muted);
+  flex-shrink: 0;
+  transition: border-color 200ms ease, background 200ms ease, color 200ms ease;
+  position: relative;
+  z-index: 1;
+}
+
+.bp-progress-step.is-complete .bp-progress-step-circle {
+  border-color: var(--bp-accent);
+  background: var(--bp-accent);
+  color: var(--bp-bg);
+}
+
+.bp-progress-step.is-active .bp-progress-step-circle {
+  border-color: var(--bp-accent);
+  background: var(--bp-bg);
+  color: var(--bp-accent);
+  box-shadow: 0 0 0 3px var(--bp-accent-soft);
+}
+
+.bp-progress-step-line {
+  width: 24px;
+  height: 1.5px;
+  background: var(--bp-accent-soft);
+  flex-shrink: 0;
+  transition: background 200ms ease;
+}
+
+.bp-progress-step.is-complete + .bp-progress-step-line,
+.bp-progress-step.is-complete .bp-progress-step-line {
+  background: var(--bp-accent);
+}
+
+/* --- Variant: ring --- SVG circular progress --- */
+.bp-progress[data-progress-variant="ring"] {
+  gap: 8px;
+}
+
+.bp-progress-ring {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+}
+
+.bp-progress-ring-svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.bp-progress-ring-bg {
+  fill: none;
+  stroke: var(--bp-accent-soft);
+  stroke-width: 3;
+}
+
+.bp-progress-ring-fill {
+  fill: none;
+  stroke: var(--bp-accent);
+  stroke-width: 3;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 450ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.bp-progress-ring-label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--bp-font-mono);
+  font-size: 9px;
+  font-weight: 500;
+  color: var(--bp-accent);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+/* --- Variant: segments --- thin line segments, one per slide --- */
+.bp-progress[data-progress-variant="segments"] {
+  gap: 4px;
+}
+
+.bp-progress-seg {
+  width: 28px;
+  height: 3px;
+  background: var(--bp-accent-soft);
+  border-radius: 1.5px;
+  transition: background 200ms ease, height 200ms ease;
+  flex-shrink: 0;
+}
+
+.bp-progress-seg.is-past {
+  background: var(--bp-muted);
+}
+
+.bp-progress-seg.is-active {
+  background: var(--bp-accent);
+  height: 4px;
+}
+
+/* === REDUCED MOTION === */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .bp-reveal-fade,
+  .bp-reveal-up,
+  .bp-reveal-left,
+  .bp-reveal-right,
+  .bp-reveal-scale,
+  .bp-reveal-blur {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+
+  .bp-progress-fill,
+  .bp-progress-ring-fill {
+    transition: none !important;
+  }
+
+  .bp-progress-dot,
+  .bp-progress-seg,
+  .bp-progress-step-circle,
+  .bp-progress-step-line {
+    transition: none !important;
+  }
+}
+
+/* === PRINT === */
+@page {
+  size: 1920px 1080px;
+  margin: 0;
+}
+
+@media print {
+  html,
+  body {
+    overflow: visible;
+    background: #fff;
+  }
+
+  .bp-viewport {
+    position: static;
+    overflow: visible;
+  }
+
+  .bp-stage {
+    position: static;
+    transform: none;
+    width: 1920px;
+    height: 1080px;
+    page-break-after: always;
+    break-after: page;
+  }
+
+  .bp-slide {
+    visibility: visible !important;
+    opacity: 1 !important;
+    position: relative !important;
+    page-break-after: always;
+    break-after: page;
+  }
+
+  .bp-edit-hotzone {
+    display: none !important;
+  }
+
+  .bp-progress {
+    display: none !important;
+  }
+}
+
+/* === FOCUS STYLES === */
+:focus-visible {
+  outline: 2px solid var(--bp-accent);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+
+.glass{background:rgba(255,255,255,.04);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.08);border-radius:16px}
+.mesh{position:absolute;inset:0;z-index:0;pointer-events:none}
+.mesh::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 15% 25%,rgba(6,105,253,.15) 0%,transparent 40%),radial-gradient(circle at 85% 75%,rgba(164,251,246,.08) 0%,transparent 50%);filter:blur(60px)}
+.glow{text-shadow:0 0 30px rgba(6,105,253,.3)}
+.teal{color:#A4FBF6}
+.stat-big{font-family:var(--bp-font-display);font-size:180px;font-weight:700;line-height:.9;color:var(--bp-accent);text-shadow:0 0 40px rgba(6,105,253,.25)}
+.stat-mid{font-family:var(--bp-font-display);font-size:88px;font-weight:700;line-height:1;color:var(--bp-accent-2)}
+.wall-num{font-family:var(--bp-font-display);font-size:240px;font-weight:700;line-height:1;color:var(--bp-accent);opacity:.1;position:absolute;right:80px;top:40px;pointer-events:none}
+.fc{padding:32px}
+.fi{width:48px;height:48px;border-radius:12px;background:rgba(6,105,253,.15);display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:18px}
+.sc{position:relative;z-index:1;height:100%;display:flex;flex-direction:column}
+.scc{justify-content:center}
+[style*="--bp-delay"]{animation-delay:var(--bp-delay,0ms)}
+
+</style>
+</head>
+<body>
+<div class="bp-viewport">
+<div class="bp-stage" id="bp-stage">
+<section class="bp-slide active" id="slide-0" aria-label="Slide 1">
+<div class="mesh"></div>
+<div class="sc scc" style="gap:28px;padding-left:40px;">
+<div class="bp-reveal-up"><span style="font-family:var(--bp-font-display);font-size:24px;font-weight:700;">CAST<span class="teal"> AI</span></span></div>
+<div class="bp-eyebrow bp-reveal-up teal" style="--bp-delay:100ms;">LIVE PANEL &middot; SEPTEMBER 17 &middot; 4 PM PST</div>
+<h1 class="bp-title bp-reveal-up glow" style="--bp-delay:200ms;font-size:56px;max-width:1100px;line-height:1.1;">Karpenter Handles the Scaling.<br>Here's What It Leaves on the Table.</h1>
+<p class="bp-subhead bp-reveal-up" style="--bp-delay:300ms;max-width:800px;color:var(--bp-muted);">Where node autoscaling stops and workload-level optimization begins.</p>
+<div class="bp-row bp-reveal-up" style="--bp-delay:400ms;gap:48px;margin-top:16px;">
+<div class="bp-stack--tight"><div style="font-size:16px;font-weight:600;">Justin Garrison</div><div class="bp-mono" style="font-size:12px;">Cloud Native Influencer &amp; Author</div></div>
+<div class="bp-stack--tight"><div style="font-size:16px;font-weight:600;">Steven Fraser</div><div class="bp-mono" style="font-size:12px;">Staff Solutions Architect, Cast AI</div></div>
+<div class="bp-stack--tight"><div style="font-size:16px;font-weight:600;">Victor Viana</div><div class="bp-mono" style="font-size:12px;">Senior Sales Engineer, Cast AI</div></div>
+</div></div>
+</section>
+<section class="bp-slide" id="slide-1" aria-label="Slide 2">
+<div class="mesh"></div>
+<div class="sc scc" style="gap:36px;">
+<div class="bp-eyebrow bp-reveal-up teal">THE REALITY</div>
+<h2 class="bp-title bp-reveal-up" style="--bp-delay:100ms;font-size:42px;max-width:900px;">Karpenter provisions nodes perfectly.<br>Utilization keeps dropping.</h2>
+<div class="bp-row bp-reveal-up" style="--bp-delay:200ms;gap:64px;margin-top:24px;">
+<div><div class="stat-big">8%</div><div class="bp-mono" style="margin-top:8px;">Avg CPU utilization</div><div class="bp-caption" style="margin-top:4px;">Down from 10% last year</div></div>
+<div><div class="stat-mid">69%</div><div class="bp-mono" style="margin-top:8px;">Clusters over-provision CPU</div><div class="bp-caption" style="margin-top:4px;">Up from 40% year-over-year</div></div>
+<div><div class="stat-mid">5%</div><div class="bp-mono" style="margin-top:8px;">GPU utilization</div><div class="bp-caption" style="margin-top:4px;">Despite rising AI spend</div></div>
+</div>
+<div class="bp-caption bp-reveal-up" style="--bp-delay:400ms;margin-top:32px;">Source: Cast AI 2026 State of Kubernetes Optimization Report &mdash; 23,000+ production clusters</div>
+</div>
+</section>
+<section class="bp-slide" id="slide-2" aria-label="Slide 3">
+<div class="mesh"></div>
+<div class="sc scc" style="gap:32px;">
+<div class="bp-eyebrow bp-reveal-up teal">WHAT KARPENTER DOES WELL</div>
+<h2 class="bp-title bp-reveal-up" style="--bp-delay:100ms;font-size:42px;">A strong foundation for node autoscaling</h2>
+<div class="bp-reveal-up" style="--bp-delay:200ms;display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-top:24px;">
+<div class="glass fc"><div class="fi teal">&#9889;</div><div style="font-size:20px;font-weight:600;">Fast Provisioning</div><div class="bp-body" style="font-size:16px;margin-top:8px;color:var(--bp-muted);">45-60s from pod pending to node ready. Direct EC2 API, no ASG roundtrip.</div></div>
+<div class="glass fc"><div class="fi teal">&#9881;</div><div style="font-size:20px;font-weight:600;">Smart Selection</div><div class="bp-body" style="font-size:16px;margin-top:8px;color:var(--bp-muted);">Picks cheapest fitting instance from a broad pool, not a fixed node group.</div></div>
+<div class="glass fc"><div class="fi teal">&#128230;</div><div style="font-size:20px;font-weight:600;">Active Consolidation</div><div class="bp-body" style="font-size:16px;margin-top:8px;color:var(--bp-muted);">Continuously evaluates and consolidates workloads onto fewer nodes.</div></div>
+<div class="glass fc"><div class="fi teal">&#9729;</div><div style="font-size:20px;font-weight:600;">Native Spot</div><div class="bp-body" style="font-size:16px;margin-top:8px;color:var(--bp-muted);">Declarative Spot with on-demand fallback. No separate ASGs needed.</div></div>
+</div>
+</div>
+</section>
+<section class="bp-slide" id="slide-3" aria-label="Slide 4">
+<div class="mesh"></div>
+<div class="sc scc" style="gap:28px;">
+<div class="bp-eyebrow bp-reveal-up teal">WHERE KARPENTER STOPS</div>
+<h2 class="bp-title bp-reveal-up" style="--bp-delay:100ms;font-size:44px;max-width:900px;">Five walls that aren't configuration problems</h2>
+<div class="bp-stack bp-reveal-up" style="--bp-delay:200ms;gap:14px;max-width:1000px;margin-top:16px;">
+<div class="glass" style="padding:18px 28px;display:flex;align-items:center;gap:20px;"><span class="bp-mono teal" style="font-size:24px;font-weight:600;">01</span><span style="font-size:19px;">Nodes provisioned perfectly, utilization stays low</span></div>
+<div class="glass" style="padding:18px 28px;display:flex;align-items:center;gap:20px;"><span class="bp-mono teal" style="font-size:24px;font-weight:600;">02</span><span style="font-size:19px;">Consolidation switched off for stateful workloads</span></div>
+<div class="glass" style="padding:18px 28px;display:flex;align-items:center;gap:20px;"><span class="bp-mono teal" style="font-size:24px;font-weight:600;">03</span><span style="font-size:19px;">Spot adoption stalls after first interruptions</span></div>
+<div class="glass" style="padding:18px 28px;display:flex;align-items:center;gap:20px;"><span class="bp-mono teal" style="font-size:24px;font-weight:600;">04</span><span style="font-size:19px;">Costs visible at node level, not by team or workload</span></div>
+<div class="glass" style="padding:18px 28px;display:flex;align-items:center;gap:20px;"><span class="bp-mono teal" style="font-size:24px;font-weight:600;">05</span><span style="font-size:19px;">Multi-cloud: different tooling and logic per cluster</span></div>
+</div>
+</div>
+</section>
+<section class="bp-slide" id="slide-4" aria-label="Slide 5">
+<div class="mesh"></div>
+<div class="wall-num">01</div>
+<div class="sc scc" style="gap:28px;max-width:1000px;">
+<div class="bp-eyebrow bp-reveal-up teal">WALL 01 &middot; OVER-REQUESTED PODS</div>
+<h2 class="bp-title bp-reveal-up" style="--bp-delay:100ms;font-size:44px;">Pods request far more than they use</h2>
+<p class="bp-body bp-reveal-up" style="--bp-delay:200ms;font-size:22px;max-width:800px;color:var(--bp-muted);line-height:1.6;">Karpenter provisions based on what pods <em>request</em>, not what they actually <em>use</em>. No node autoscaler can fix padded requests &mdash; they just provision around the waste.</p>
+<div class="bp-row bp-reveal-up" style="--bp-delay:300ms;gap:48px;margin-top:24px;">
+<div><div class="stat-big" style="font-size:140px;">69%</div><div class="bp-mono" style="margin-top:8px;">of clusters over-provision CPU</div></div>
+<div><div class="stat-mid" style="font-size:72px;">79%</div><div class="bp-mono" style="margin-top:8px;">over-provision memory</div></div>
+<div><div class="stat-mid" style="font-size:72px;">8%</div><div class="bp-mono" style="margin-top:8px;">actual avg CPU utilization</div></div>
+</div>
+<p class="bp-caption bp-reveal-up" style="--bp-delay:400ms;margin-top:24px;">Requests are set conservatively at manifest time. The cost of an OOM is visible; the cost of waste is not.</p>
+</div>
+</section>
+<section class="bp-slide" id="slide-5" aria-label="Slide 6">
+<div class="mesh"></div>
+<div class="wall-num">02</div>
+<div class="sc scc" style="gap:28px;max-width:1000px;">
+<div class="bp-eyebrow bp-reveal-up teal">WALL 02 &middot; CONSOLIDATION BREAKS STATEFUL</div>
+<h2 class="bp-title bp-reveal-up" style="--bp-delay:100ms;font-size:44px;">Consolidation gets switched off</h2>
+<p class="bp-body bp-reveal-up" style="--bp-delay:200ms;font-size:22px;max-width:800px;color:var(--bp-muted);line-height:1.6;">Stateful and long-running workloads can't survive the disruption of standard eviction. Teams restrict or disable consolidation entirely to protect them &mdash; and efficiency stalls.</p>
+<div class="bp-reveal-up glass" style="--bp-delay:300ms;padding:28px;max-width:800px;margin-top:16px;">
+<div class="bp-mono teal" style="margin-bottom:12px;">THE PROBLEM</div>
+<div class="bp-body" style="font-size:18px;">Standard pod eviction terminates and restarts applications. For databases, streaming apps, and JVM workloads, this means downtime, data risk, and cold starts.</div>
+</div>
+<div class="bp-reveal-up" style="--bp-delay:400ms;margin-top:16px;">
+<div class="bp-mono teal" style="margin-bottom:8px;">THE ANSWER</div>
+<div class="bp-body" style="font-size:18px;">Container Live Migration moves running containers between nodes &mdash; preserving memory, process state, and TCP connections.</div>
+</div>
+</div>
+</section>
+<section class="bp-slide" id="slide-6" aria-label="Slide 7">
+<div class="mesh"></div>
+<div class="wall-num">03</div>
+<div class="sc scc" style="gap:28px;max-width:1000px;">
+<div class="bp-eyebrow bp-reveal-up teal">WALL 03 &middot; SPOT ADOPTION STALLS</div>
+<h2 class="bp-title bp-reveal-up" style="--bp-delay:100ms;font-size:44px;">First interruption hits production,<br>Spot gets turned off</h2>
+<p class="bp-body bp-reveal-up" style="--bp-delay:200ms;font-size:22px;max-width:800px;color:var(--bp-muted);line-height:1.6;">Karpenter treats all Spot pools equally and relies on AWS's standard 2-minute interruption warning. After the first few disruptions hit production, clusters quietly drift back to on-demand.</p>
+<div class="bp-row bp-reveal-up" style="--bp-delay:300ms;gap:64px;margin-top:24px;">
+<div><div class="stat-big" style="font-size:140px;">2 min</div><div class="bp-mono" style="margin-top:8px;">AWS interruption warning</div></div>
+<div><div class="stat-mid" style="font-size:72px;color:var(--bp-accent);">30 min</div><div class="bp-mono" style="margin-top:8px;">Cast AI prediction window</div></div>
+</div>
+<p class="bp-caption bp-reveal-up" style="--bp-delay:400ms;margin-top:24px;">Cast AI's ML model identifies at-risk nodes up to 30 minutes before interruptions &mdash; enabling graceful migration with minimal disruption.</p>
+</div>
+</section>
+<section class="bp-slide" id="slide-7" aria-label="Slide 8">
+<div class="mesh"></div>
+<div class="wall-num">04</div>
+<div class="sc scc" style="gap:28px;max-width:1000px;">
+<div class="bp-eyebrow bp-reveal-up teal">WALL 04 &middot; COST BLIND SPOTS</div>
+<h2 class="bp-title bp-reveal-up" style="--bp-delay:100ms;font-size:44px;">Nobody can say where the money goes</h2>
+<p class="bp-body bp-reveal-up" style="--bp-delay:200ms;font-size:22px;max-width:800px;color:var(--bp-muted);line-height:1.6;">Costs are visible at the node level, but nobody can say which team or workload the money actually goes to. Karpenter has no awareness of Reserved Instances, Savings Plans, or negotiated discounts.</p>
+<div class="bp-reveal-up glass" style="--bp-delay:300ms;padding:28px;max-width:800px;margin-top:16px;">
+<div class="bp-mono teal" style="margin-bottom:12px;">WHAT'S MISSING</div>
+<div class="bp-stack" style="gap:12px;">
+<div class="bp-body" style="font-size:18px;">&bull; Cost attribution by namespace, workload, or team</div>
+<div class="bp-body" style="font-size:18px;">&bull; Reserved Instance and Savings Plan utilization tracking</div>
+<div class="bp-body" style="font-size:18px;">&bull; Real-time spend visibility across cluster fleets</div>
+<div class="bp-body" style="font-size:18px;">&bull; Showback and chargeback to engineering teams</div>
+</div>
+</div>
+</div>
+</section>
+<section class="bp-slide" id="slide-8" aria-label="Slide 9">
+<div class="mesh"></div>
+<div class="wall-num">05</div>
+<div class="sc scc" style="gap:28px;max-width:1000px;">
+<div class="bp-eyebrow bp-reveal-up teal">WALL 05 &middot; MULTI-CLOUD FRAGMENTATION</div>
+<h2 class="bp-title bp-reveal-up" style="--bp-delay:100ms;font-size:44px;">Different tooling, different logic, per cluster</h2>
+<p class="bp-body bp-reveal-up" style="--bp-delay:200ms;font-size:22px;max-width:800px;color:var(--bp-muted);line-height:1.6;">Multi-cloud setups end up with Karpenter here, Cluster Autoscaler there. Different optimization logic per cluster means no unified visibility, no consistent policies, and no fleet-wide efficiency.</p>
+<div class="bp-reveal-up glass" style="--bp-delay:300ms;padding:28px;max-width:800px;margin-top:16px;">
+<div class="bp-mono teal" style="margin-bottom:12px;">THE RESULT</div>
+<div class="bp-body" style="font-size:18px;">Each cluster becomes its own optimization island. Engineering teams reinvent the same logic across providers. Savings achieved in one cluster don't transfer to others. The optimization burden scales linearly with cluster count.</div>
+</div>
+</div>
+</section>
+<section class="bp-slide" id="slide-9" aria-label="Slide 10">
+<div class="mesh"></div>
+<div class="sc scc" style="gap:32px;">
+<div class="bp-eyebrow bp-reveal-up teal">THE SOLUTION</div>
+<h2 class="bp-title bp-reveal-up glow" style="--bp-delay:100ms;font-size:52px;">Karpenter Enterprise Suite</h2>
+<p class="bp-subhead bp-reveal-up" style="--bp-delay:200ms;max-width:800px;color:var(--bp-muted);">Cast AI extends Karpenter &mdash; not replaces it. Workload-level optimization, cost visibility, and Spot intelligence layered on top of your existing autoscaler.</p>
+<div class="bp-reveal-up" style="--bp-delay:300ms;display:grid;grid-template-columns:repeat(2,1fr);gap:20px;max-width:900px;margin-top:24px;">
+<div class="glass fc"><div style="font-size:18px;font-weight:600;margin-bottom:8px;">Non-intrusive</div><div class="bp-body" style="font-size:16px;color:var(--bp-muted);">Karpenter remains the provisioner. Cast AI guides decisions through CRD modifications.</div></div>
+<div class="glass fc"><div style="font-size:18px;font-weight:600;margin-bottom:8px;">CRD-first</div><div class="bp-body" style="font-size:16px;color:var(--bp-muted);">Your NodePools remain the source of truth. No vendor lock-in.</div></div>
+<div class="glass fc"><div style="font-size:18px;font-weight:600;margin-bottom:8px;">Incremental</div><div class="bp-body" style="font-size:16px;color:var(--bp-muted);">Start with free cost reporting. Enable features as you build confidence.</div></div>
+<div class="glass fc"><div style="font-size:18px;font-weight:600;margin-bottom:8px;">Rollback-ready</div><div class="bp-body" style="font-size:16px;color:var(--bp-muted);">Remove Cast AI components and return to original Karpenter-only state.</div></div>
+</div>
+</div>
+</section>
+<section class="bp-slide" id="slide-10" aria-label="Slide 11">
+<div class="mesh"></div>
+<div class="sc scc" style="gap:28px;">
+<div class="bp-eyebrow bp-reveal-up teal">KEY CAPABILITIES</div>
+<h2 class="bp-title bp-reveal-up" style="--bp-delay:100ms;font-size:42px;">What Cast AI adds on top of Karpenter</h2>
+<div class="bp-reveal-up" style="--bp-delay:200ms;display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:24px;">
+<div class="glass fc"><div class="fi teal">&#128200;</div><div style="font-size:18px;font-weight:600;">Workload Rightsizing</div><div class="bp-body" style="font-size:15px;margin-top:8px;color:var(--bp-muted);">Continuously learns actual usage and adjusts CPU/memory requests automatically. Tighter fit means better bin-packing.</div></div>
+<div class="glass fc"><div class="fi teal">&#128640;</div><div style="font-size:18px;font-weight:600;">Container Live Migration</div><div class="bp-body" style="font-size:15px;margin-top:8px;color:var(--bp-muted);">Move running containers between nodes with zero downtime. Preserves memory, process state, and TCP connections.</div></div>
+<div class="glass fc"><div class="fi teal">&#9889;</div><div style="font-size:18px;font-weight:600;">Spot Intelligence</div><div class="bp-body" style="font-size:15px;margin-top:8px;color:var(--bp-muted);">30-min interruption prediction. Reliability scoring across Spot pools. Up to 94% interruption reduction.</div></div>
+<div class="glass fc"><div class="fi teal">&#128260;</div><div style="font-size:18px;font-weight:600;">Continuous Rebalancing</div><div class="bp-body" style="font-size:15px;margin-top:8px;color:var(--bp-muted);">Kentroller takes over consolidation from Karpenter. Savings-threshold-gated, CLM-enabled, fine-grained eviction policies.</div></div>
+</div>
+</div>
+</section>
+<section class="bp-slide" id="slide-11" aria-label="Slide 12">
+<div class="mesh"></div>
+<div class="sc scc" style="gap:28px;">
+<div class="bp-eyebrow bp-reveal-up teal">ARCHITECTURE</div>
+<h2 class="bp-title bp-reveal-up" style="--bp-delay:100ms;font-size:42px;">How it works alongside Karpenter</h2>
+<div class="bp-reveal-up" style="--bp-delay:200ms;display:grid;grid-template-columns:1fr 1fr;gap:32px;max-width:1200px;margin-top:24px;">
+<div class="glass fc">
+<div class="bp-mono teal" style="margin-bottom:16px;">CAST AI COMPONENTS</div>
+<div class="bp-stack" style="gap:10px;">
+<div class="bp-body" style="font-size:16px;"><strong>Cast AI Agent</strong> &mdash; collects metrics and workload data</div>
+<div class="bp-body" style="font-size:16px;"><strong>Cluster Controller</strong> &mdash; coordinates with Karpenter</div>
+<div class="bp-body" style="font-size:16px;"><strong>Kentroller</strong> &mdash; manages optimization and automation</div>
+<div class="bp-body" style="font-size:16px;"><strong>CLM Controller</strong> &mdash; zero-downtime migrations</div>
+<div class="bp-body" style="font-size:16px;"><strong>Spot Handler</strong> &mdash; Spot lifecycle and fallback</div>
+<div class="bp-body" style="font-size:16px;"><strong>Pod Mutator</strong> &mdash; automated Pod spec adjustments</div>
+<div class="bp-body" style="font-size:16px;"><strong>Workload Autoscaler</strong> &mdash; continuous rightsizing</div>
+</div>
+</div>
+<div class="glass fc">
+<div class="bp-mono teal" style="margin-bottom:16px;">HOW THEY INTERACT</div>
+<div class="bp-stack" style="gap:12px;">
+<div class="bp-body" style="font-size:16px;">Karpenter continues handling <strong>node provisioning</strong> &mdash; Cast AI never replaces it.</div>
+<div class="bp-body" style="font-size:16px;">Cast AI modifies <strong>Karpenter CRDs</strong> (NodePools, EC2NodeClasses) to steer decisions.</div>
+<div class="bp-body" style="font-size:16px;">Your existing resources <strong>remain the source of truth</strong>.</div>
+<div class="bp-body" style="font-size:16px;">Each feature enables <strong>independently</strong> &mdash; start with reporting, add optimization as ready.</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="bp-slide" id="slide-12" aria-label="Slide 13">
+<div class="mesh"></div>
+<div class="sc scc" style="gap:36px;">
+<div class="bp-eyebrow bp-reveal-up teal">THE IMPACT</div>
+<h2 class="bp-title bp-reveal-up glow" style="--bp-delay:100ms;font-size:42px;">What changes when you close the gap</h2>
+<div class="bp-reveal-up" style="--bp-delay:200ms;display:grid;grid-template-columns:repeat(3,1fr);gap:32px;margin-top:32px;">
+<div class="glass fc" style="text-align:center;">
+<div class="stat-big" style="font-size:100px;">30-70%</div>
+<div class="bp-mono" style="margin-top:12px;">Typical cloud cost reduction</div>
+<div class="bp-caption" style="margin-top:8px;">Rightsizing + Spot on top of Karpenter</div>
+</div>
+<div class="glass fc" style="text-align:center;">
+<div class="stat-mid" style="font-size:80px;">94%</div>
+<div class="bp-mono" style="margin-top:12px;">Spot interruption reduction</div>
+<div class="bp-caption" style="margin-top:8px;">Best case (Azure). 23% AWS, 29% GCP</div>
+</div>
+<div class="glass fc" style="text-align:center;">
+<div class="stat-mid" style="font-size:80px;">30 min</div>
+<div class="bp-mono" style="margin-top:12px;">Advance interruption warning</div>
+<div class="bp-caption" style="margin-top:8px;">vs 2 min standard AWS warning</div>
+</div>
+</div>
+<div class="bp-caption bp-reveal-up" style="--bp-delay:400ms;margin-top:32px;text-align:center;">Trusted by 2100+ companies including Akamai, BMW Group, FICO, and Hugging Face</div>
+</div>
+</section>
+<section class="bp-slide" id="slide-13" aria-label="Slide 14">
+<div class="mesh"></div>
+<div class="sc scc" style="gap:28px;text-align:center;align-items:center;">
+<div class="bp-reveal-up"><span style="font-family:var(--bp-font-display);font-size:24px;font-weight:700;">CAST<span class="teal"> AI</span></span></div>
+<h2 class="bp-title bp-reveal-up glow" style="--bp-delay:100ms;font-size:52px;">Join the live discussion.</h2>
+<p class="bp-subhead bp-reveal-up" style="--bp-delay:200ms;color:var(--bp-muted);">September 17 &middot; 4 PM PST</p>
+<div class="bp-reveal-up glass" style="--bp-delay:300ms;padding:28px 48px;max-width:700px;">
+<div class="bp-mono teal" style="margin-bottom:16px;">WHAT YOU'LL LEARN</div>
+<div class="bp-stack" style="gap:10px;text-align:left;">
+<div class="bp-body" style="font-size:17px;">Where Karpenter stops and workload-level optimization begins</div>
+<div class="bp-body" style="font-size:17px;">How over-requested CPU and memory silently undermine autoscaling</div>
+<div class="bp-body" style="font-size:17px;">Why node consolidation often fails without safe container migration</div>
+<div class="bp-body" style="font-size:17px;">How Spot interruption prediction changes the risk/reward math</div>
+</div>
+</div>
+<div class="bp-reveal-up" style="--bp-delay:400ms;margin-top:16px;">
+<div style="display:inline-block;padding:16px 40px;background:var(--bp-accent);color:#fff;border-radius:12px;font-size:20px;font-weight:600;font-family:var(--bp-font-display);">cast.ai/webinars/karpenter-enterprise-limits</div>
+</div>
+<div class="bp-caption bp-reveal-up" style="--bp-delay:500ms;margin-top:12px;">Bonus: All participants can win Cast AI swag and AirPods Pro 3</div>
+</div>
+</section>
+<div class="bp-edit-hotzone" title="Toggle inline edit (E)" aria-label="Toggle inline edit">E</div>
+</div>
+</div>
+<script>
+class PresentationApp{constructor(){this.stage=document.getElementById("bp-stage");this.slides=Array.from(this.stage.querySelectorAll(".bp-slide"));this.total=this.slides.length;this._i=0;this._edit=false;this._scale();window.addEventListener("resize",()=>this._scale());document.addEventListener("keydown",e=>this._key(e));document.addEventListener("click",e=>this._click(e));}
+get currentIndex(){return this._i;}
+next(){this._go(this._i+1);}
+prev(){this._go(this._i-1);}
+goTo(i){this._go(i);}
+_go(i){i=Math.max(0,Math.min(this.total-1,i));if(i===this._i)return;this.slides[this._i].classList.remove("active");this._i=i;this.slides[i].classList.add("active");this._replay(this.slides[i]);}
+_replay(s){s.querySelectorAll(".bp-reveal-fade,.bp-reveal-up,.bp-reveal-left,.bp-reveal-right,.bp-reveal-scale,.bp-reveal-blur").forEach(e=>{e.style.animation="none";void e.offsetHeight;e.style.animation="";});}
+_scale(){var s=Math.min(window.innerWidth/1920,window.innerHeight/1080);this.stage.style.transform="translate(-50%, -50%) scale("+s+")";}
+_key(e){if(e.target.isContentEditable)return;switch(e.key){case"ArrowRight":case" ":case"PageDown":e.preventDefault();this.next();break;case"ArrowLeft":case"PageUp":e.preventDefault();this.prev();break;case"Home":e.preventDefault();this.goTo(0);break;case"End":e.preventDefault();this.goTo(this.total-1);break;case"e":case"E":this._toggleEdit();break;case"Escape":if(this._edit)this._toggleEdit();break;}}
+_click(e){if(this._edit)return;if(e.target.isContentEditable||e.target.closest("a")||e.target.closest("button"))return;var x=e.clientX/window.innerWidth;if(x<0.33)this.prev();else if(x>0.67)this.next();}
+_toggleEdit(){this._edit=!this._edit;document.body.classList.toggle("bp-edit-mode",this._edit);var _t=this;this.stage.querySelectorAll(".bp-editable").forEach(function(el){el.contentEditable=_t._edit?"true":"false";});}}
+new PresentationApp();
+</script>
+</body>
+</html>
