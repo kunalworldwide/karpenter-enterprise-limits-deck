@@ -709,12 +709,12 @@ body {
 /* === LOGO WATERMARK === */
 .cast-logo-mark {
   position: absolute;
-  top: 32px;
-  right: 56px;
-  width: 140px;
-  height: 30px;
-  opacity: 0.85;
-  z-index: 5;
+  top: 28px;
+  right: 48px;
+  width: 160px;
+  height: 34px;
+  opacity: 1.0;
+  z-index: 10;
   pointer-events: none;
 }
 .cast-logo-mark svg {
@@ -722,7 +722,7 @@ body {
   height: 100%;
 }
 .cast-logo-mark svg path {
-  fill: #0A1628 !important;
+  fill: #000000 !important;
 }
 
 /* === SLIDE BASE === */
@@ -931,14 +931,15 @@ body {
   font-weight: 700;
   line-height: 1;
   color: var(--cast-blue);
-  display: inline;
+  display: inline-block;
 }
 .stat-suffix {
   font-family: var(--cast-font-display);
   font-size: 28px;
   font-weight: 700;
   color: var(--cast-blue);
-  margin-left: 2px;
+  margin-left: 4px;
+  display: inline;
 }
 .stat-label {
   font-size: 15px;
@@ -2280,6 +2281,10 @@ body {
 .yaml-num { color: #DC2626 !important; font-weight: 600; }
 .yaml-value { color: #E2E8F0 !important; }
 .yaml-comment { color: #94A3B8 !important; font-style: italic; }
+<style id="timeline-anim">
+.timeline-dot { animation: dotPulse 2s ease-in-out infinite; transform-origin: center; }
+@keyframes dotPulse { 0%,100% { opacity: 1; r: 6; } 50% { opacity: 0.6; r: 9; } }
+@media (prefers-reduced-motion: reduce) { .timeline-dot { animation: none; } }
 </style>
 </head>
 <body>
@@ -2665,19 +2670,11 @@ body {
         </div>
         <div class="waste-banner">92% of provisioned CPU is wasted</div>
       </div>
-      <div class="s4-stats">
-        <div class="mini-stat">
-          <span class="mini-num count-up" data-target="69">0</span><span class="mini-suffix">%</span>
-          <div class="mini-label">over-provision CPU</div>
-        </div>
-        <div class="mini-stat">
-          <span class="mini-num count-up" data-target="79">0</span><span class="mini-suffix">%</span>
-          <div class="mini-label">over-provision memory</div>
-        </div>
-        <div class="mini-stat">
-          <span class="mini-num count-up" data-target="12">0</span><span class="mini-suffix">×</span>
-          <div class="mini-label">CPU vs peak</div>
-        </div>
+      <div style="display:flex;gap:10px;margin-top:14px;align-items:center;flex-wrap:wrap;">
+        <span style="font-size:12px;color:var(--cast-muted);font-weight:500;">Typical pod:</span>
+        <span style="padding:5px 10px;background:rgba(6,105,253,0.08);border-radius:6px;font-family:var(--cast-font-mono);font-size:11px;color:var(--cast-blue);">requests.cpu: 2</span>
+        <span style="padding:5px 10px;background:rgba(164,251,246,0.12);border-radius:6px;font-family:var(--cast-font-mono);font-size:11px;color:#0EA5E9;">usage: 0.16</span>
+        <span style="font-size:12px;color:#DC2626;font-weight:600;">→ 92% wasted</span>
       </div>
     </div>
     <div class="s4-right">
