@@ -1,0 +1,5 @@
+.hermes/
+*.png
+*.har
+ha_access_token.txt
+granola*
