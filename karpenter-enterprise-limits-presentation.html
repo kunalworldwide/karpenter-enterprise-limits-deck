@@ -732,7 +732,8 @@ body {
   color: var(--cast-text);
 }
 .bp-slide#slide-11 {
-  padding-bottom: 48px !important;
+  padding-bottom: 32px !important;
+  padding-top: 48px !important;
 }
 
 /* === SLIDE HEADER === */
@@ -891,9 +892,6 @@ body {
 .bar-fill {
   width: var(--bar-w, 10%);
 }
-@media (prefers-reduced-motion: reduce) {
-  }
-
 
 /* === BAR CHARTS === */
 .bar-fill { width: var(--bar-w, 10%); }
@@ -957,8 +955,9 @@ body {
   background: var(--cast-card);
   border: 1px solid var(--cast-card-border);
   border-radius: 16px;
-  padding: 24px;
-  flex: 1;
+  padding: 20px;
+  flex: 1.4;
+  min-height: 300px;
 }
 .chart-title {
   font-size: 14px;
@@ -1117,8 +1116,9 @@ body {
   font-weight: 700;
   color: white;
   white-space: nowrap;
-.speed-blue { background: linear-gradient(90deg, #0669FD, #82C2FF); }
-.speed-gray { background: linear-gradient(90deg, #94A3B8, #CBD5E1); color: #1E293B; }
+}
+.speed-blue { background-color: #0669FD !important; background-image: linear-gradient(90deg, #0669FD, #82C2FF) !important; }
+.speed-gray { background-color: #94A3B8 !important; background-image: linear-gradient(90deg, #94A3B8, #CBD5E1) !important; color: #1E293B; }
 .speed-note {
   font-size: 13px;
   font-weight: 600;
@@ -1720,7 +1720,7 @@ body {
 
 /* === SLIDE 11 === */
 .s11-body { display: flex; gap: 20px; height: calc(100% - 120px); }
-#slide-11 .slide-header { margin-bottom: 16px; }
+#slide-11 .slide-header { margin-bottom: 12px; }
 .s11-left { flex: 1.2; }
 .s11-left .code-block { font-size: 10px; line-height: 1.4; padding: 10px 14px; }
 .s11-right { flex: 1; display: flex; flex-direction: column; gap: 16px; }
@@ -2365,34 +2365,69 @@ body {
         </div>
       </div>
       <div class="s1-chart-card">
-        <div class="chart-title">Resource Utilization Trends — CPU, Memory, GPU (2024-2025)</div>
-        <svg width="100%" height="180" viewBox="0 0 700 180" style="overflow:visible;">
+        <div class="chart-title">Resource Utilization Declining Year Over Year — While Provisioning Grows</div>
+        <svg width="100%" height="300" viewBox="0 0 800 320" preserveAspectRatio="xMidYMid meet" style="display:block;">
           <defs>
-            <linearGradient id="cpuGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0669FD" stop-opacity="0.15"/><stop offset="1" stop-color="#0669FD" stop-opacity="0"/></linearGradient>
-            <linearGradient id="memGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#A4FBF6" stop-opacity="0.12"/><stop offset="1" stop-color="#A4FBF6" stop-opacity="0"/></linearGradient>
+            <linearGradient id="cpuGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#0669FD" stop-opacity="0.25"/>
+              <stop offset="1" stop-color="#0669FD" stop-opacity="0"/>
+            </linearGradient>
+            <linearGradient id="wasteGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#EF4444" stop-opacity="0.06"/>
+              <stop offset="1" stop-color="#EF4444" stop-opacity="0.02"/>
+            </linearGradient>
           </defs>
-          <line x1="60" y1="160" x2="660" y2="160" stroke="#E2E8F0" stroke-width="1"/>
-          <line x1="60" y1="20" x2="60" y2="160" stroke="#E2E8F0" stroke-width="1"/>
-          <text x="15" y="25" font-family="JetBrains Mono" font-size="10" fill="#94A3B8">50%</text>
-          <text x="20" y="90" font-family="JetBrains Mono" font-size="10" fill="#94A3B8">25%</text>
-          <text x="25" y="165" font-family="JetBrains Mono" font-size="10" fill="#94A3B8">0%</text>
-          <text x="150" y="175" font-family="JetBrains Mono" font-size="10" fill="#94A3B8">2024 Q1</text>
-          <text x="280" y="175" font-family="JetBrains Mono" font-size="10" fill="#94A3B8">Q3</text>
-          <text x="390" y="175" font-family="JetBrains Mono" font-size="10" fill="#94A3B8">2025 Q1</text>
-          <text x="520" y="175" font-family="JetBrains Mono" font-size="10" fill="#94A3B8">Q3</text>
-          <text x="630" y="175" font-family="JetBrains Mono" font-size="10" fill="#94A3B8">2026</text>
-          <path d="M60,130 L150,125 L250,135 L350,140 L450,144 L550,148 L660,148 L660,160 L60,160 Z" fill="url(#cpuGrad)"/>
-          <path d="M60,130 L150,125 L250,135 L350,140 L450,144 L550,148 L660,148" fill="none" stroke="#0669FD" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
-          <path d="M60,100 L150,95 L250,100 L350,110 L450,115 L550,118 L660,120" fill="none" stroke="#A4FBF6" stroke-width="2.5" stroke-linejoin="round" stroke-dasharray="5 3"/>
-          <path d="M60,155 L150,154 L250,156 L350,158 L450,158 L550,159 L660,159" fill="none" stroke="#EAD9FD" stroke-width="2.5" stroke-linejoin="round"/>
-          <circle cx="660" cy="148" r="4" fill="#0669FD"/>
-          <text x="665" y="145" font-family="Space Grotesk" font-size="12" font-weight="700" fill="#0669FD">8% CPU</text>
-          <circle cx="660" cy="120" r="4" fill="#A4FBF6"/>
-          <text x="665" y="117" font-family="Space Grotesk" font-size="12" font-weight="700" fill="#0EA5E9">20% Mem</text>
-          <circle cx="660" cy="159" r="4" fill="#EAD9FD"/>
-          <text x="665" y="156" font-family="Space Grotesk" font-size="12" font-weight="700" fill="#8B5CF6">5% GPU</text>
-          <text x="100" y="125" font-family="JetBrains Mono" font-size="9" fill="#0669FD">10%</text>
-          <text x="100" y="95" font-family="JetBrains Mono" font-size="9" fill="#0EA5E9">23%</text>
+          <!-- Grid lines -->
+          <line x1="80" y1="280" x2="760" y2="280" stroke="#E2E8F0" stroke-width="1"/>
+          <line x1="80" y1="40" x2="80" y2="280" stroke="#E2E8F0" stroke-width="1"/>
+          <!-- Y axis labels -->
+          <text x="30" y="48" font-family="JetBrains Mono" font-size="11" fill="#94A3B8">100%</text>
+          <text x="40" y="120" font-family="JetBrains Mono" font-size="11" fill="#94A3B8">75%</text>
+          <text x="40" y="190" font-family="JetBrains Mono" font-size="11" fill="#94A3B8">50%</text>
+          <text x="40" y="260" font-family="JetBrains Mono" font-size="11" fill="#94A3B8">25%</text>
+          <text x="55" y="285" font-family="JetBrains Mono" font-size="11" fill="#94A3B8">0%</text>
+          <!-- X axis labels -->
+          <text x="120" y="300" font-family="JetBrains Mono" font-size="11" fill="#94A3B8">2024</text>
+          <text x="320" y="300" font-family="JetBrains Mono" font-size="11" fill="#94A3B8">2025</text>
+          <text x="520" y="300" font-family="JetBrains Mono" font-size="11" fill="#94A3B8">2026</text>
+          <text x="700" y="300" font-family="JetBrains Mono" font-size="11" fill="#94A3B8">Proj</text>
+          
+          <!-- Waste zone (the gap between 100% provisioned and actual usage) -->
+          <rect x="80" y="40" width="680" height="240" fill="url(#wasteGrad)"/>
+          <text x="420" y="30" text-anchor="middle" font-family="Space Grotesk" font-size="14" font-weight="700" fill="#EF4444" opacity="0.6">WASTE ZONE — 92% of provisioned compute is unused</text>
+          
+          <!-- CPU line (blue) - declining from 10% to 8% -->
+          <path d="M80,236 L260,232 L440,244 L620,256 L700,256 L700,280 L80,280 Z" fill="url(#cpuGrad)"/>
+          <path d="M80,236 L260,232 L440,244 L620,256 L700,256" fill="none" stroke="#0669FD" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+          <circle cx="80" cy="236" r="5" fill="#0669FD"/>
+          <circle cx="260" cy="232" r="5" fill="#0669FD"/>
+          <circle cx="440" cy="244" r="5" fill="#0669FD"/>
+          <circle cx="620" cy="256" r="5" fill="#0669FD"/>
+          <circle cx="700" cy="256" r="6" fill="#0669FD" stroke="white" stroke-width="2"/>
+          <text x="80" y="222" text-anchor="middle" font-family="Space Grotesk" font-size="14" font-weight="700" fill="#0669FD">10%</text>
+          <text x="700" y="242" text-anchor="middle" font-family="Space Grotesk" font-size="16" font-weight="700" fill="#0669FD">8%</text>
+          
+          <!-- Memory line (teal) - declining from 23% to 20% -->
+          <path d="M80,176 L260,168 L440,180 L620,192 L700,196" fill="none" stroke="#0EA5E9" stroke-width="3" stroke-linejoin="round" stroke-dasharray="8 4"/>
+          <circle cx="80" cy="176" r="5" fill="#0EA5E9"/>
+          <circle cx="700" cy="196" r="6" fill="#0EA5E9" stroke="white" stroke-width="2"/>
+          <text x="80" y="162" text-anchor="middle" font-family="Space Grotesk" font-size="14" font-weight="700" fill="#0EA5E9">23%</text>
+          <text x="700" y="182" text-anchor="middle" font-family="Space Grotesk" font-size="16" font-weight="700" fill="#0EA5E9">20%</text>
+          
+          <!-- GPU line (purple) - at 5% -->
+          <path d="M80,266 L260,266 L440,268 L620,268 L700,268" fill="none" stroke="#8B5CF6" stroke-width="3" stroke-linejoin="round"/>
+          <circle cx="80" cy="266" r="5" fill="#8B5CF6"/>
+          <circle cx="700" cy="268" r="6" fill="#8B5CF6" stroke="white" stroke-width="2"/>
+          <text x="80" y="252" text-anchor="middle" font-family="Space Grotesk" font-size="14" font-weight="700" fill="#8B5CF6">5%</text>
+          <text x="700" y="254" text-anchor="middle" font-family="Space Grotesk" font-size="16" font-weight="700" fill="#8B5CF6">5%</text>
+          
+          <!-- Legend -->
+          <rect x="500" y="50" width="14" height="3" fill="#0669FD" rx="1"/>
+          <text x="520" y="55" font-family="Inter" font-size="12" fill="#0A1628">CPU</text>
+          <rect x="560" y="50" width="14" height="3" fill="#0EA5E9" rx="1"/>
+          <text x="580" y="55" font-family="Inter" font-size="12" fill="#0A1628">Memory</text>
+          <rect x="640" y="50" width="14" height="3" fill="#8B5CF6" rx="1"/>
+          <text x="660" y="55" font-family="Inter" font-size="12" fill="#0A1628">GPU</text>
         </svg>
       </div>
     </div>
