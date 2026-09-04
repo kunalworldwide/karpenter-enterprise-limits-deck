@@ -2272,6 +2272,15 @@ body {
 
 }
 
+
+/* YAML SYNTAX COLORS */
+.yaml-key { color: #0669FD !important; font-weight: 600; }
+.yaml-colon { color: #5B6B82 !important; }
+.yaml-string { color: #7C3AED !important; }
+.yaml-bool { color: #0669FD !important; font-weight: 700; }
+.yaml-num { color: #DC2626 !important; font-weight: 600; }
+.yaml-value { color: #E2E8F0 !important; }
+.yaml-comment { color: #94A3B8 !important; font-style: italic; }
 </style>
 <style id="yaml-syntax">
 .yaml-key { color: #0669FD !important; font-weight: 600; }
@@ -2281,9 +2290,10 @@ body {
 .yaml-num { color: #DC2626 !important; font-weight: 600; }
 .yaml-value { color: #E2E8F0 !important; }
 .yaml-comment { color: #94A3B8 !important; font-style: italic; }
+</style>
 <style id="timeline-anim">
-.timeline-dot { animation: dotPulse 2s ease-in-out infinite; transform-origin: center; }
-@keyframes dotPulse { 0%,100% { opacity: 1; r: 6; } 50% { opacity: 0.6; r: 9; } }
+.tl-dot { animation: dotPulse 2s ease-in-out infinite; transform-origin: center; }
+@keyframes dotPulse { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.6; transform: scale(1.4); } }
 @media (prefers-reduced-motion: reduce) { .timeline-dot { animation: none; } }
 </style>
 </head>
@@ -2583,6 +2593,7 @@ body {
       <div class="wall-num">01</div>
       <div class="wall-body">
         <div class="wall-title">Over-requested Pods</div>
+        <div style="font-size:24px;margin:8px 0;">📦</div>
         <div class="wall-desc">Pods ask for 12× more CPU than they use. Karpenter provisions to the request — not the need.</div>
         <div class="wall-tag">→ Workload Autoscaler</div>
       </div>
@@ -2591,6 +2602,7 @@ body {
       <div class="wall-num">02</div>
       <div class="wall-body">
         <div class="wall-title">Consolidation Breaks Stateful</div>
+        <div style="font-size:24px;margin:8px 0;">🔄</div>
         <div class="wall-desc">Disruptive eviction tears down stateful workloads. No live migration.</div>
         <div class="wall-tag">→ Container Live Migration</div>
       </div>
@@ -2599,6 +2611,7 @@ body {
       <div class="wall-num">03</div>
       <div class="wall-body">
         <div class="wall-title">Spot Adoption Stalls</div>
+        <div style="font-size:24px;margin:8px 0;">⚠️</div>
         <div class="wall-desc">Reactive 2-min warnings cause interruptions. No ML-based prediction.</div>
         <div class="wall-tag">→ Spot Intelligence</div>
       </div>
@@ -2607,6 +2620,7 @@ body {
       <div class="wall-num">04</div>
       <div class="wall-body">
         <div class="wall-title">Cost Blind Spots</div>
+        <div style="font-size:24px;margin:8px 0;">🔍</div>
         <div class="wall-desc">No visibility into RI/SP coverage, per-team cost, or namespace-level spend.</div>
         <div class="wall-tag">→ Cost Visibility</div>
       </div>
@@ -2615,6 +2629,7 @@ body {
       <div class="wall-num">05</div>
       <div class="wall-body">
         <div class="wall-title">Multi-cloud Fragmentation</div>
+        <div style="font-size:24px;margin:8px 0;">☁️</div>
         <div class="wall-desc">EKS uses Karpenter, AKS uses NAP, GKE uses CAS — no unified policy.</div>
         <div class="wall-tag">→ Unified Platform</div>
       </div>
@@ -2872,7 +2887,7 @@ body {
     <div class="s7-col">
       <div class="s7-card s7-has">
         <div class="s7-card-icon">👁</div>
-        <div class="s7-card-title">What Karpenter Sees</div>
+        <div class="s7-card-title">🔧 Karpenter Sees</div>
         <ul class="s7-list">
           <li>Node count</li>
           <li>Instance types</li>
@@ -2896,7 +2911,7 @@ body {
     <div class="s7-col">
       <div class="s7-card s7-adds">
         <div class="s7-card-icon">★</div>
-        <div class="s7-card-title">What Cast AI Adds</div>
+        <div class="s7-card-title">✨ Cast AI Adds</div>
         <ul class="s7-list">
           <li>Real-time cost by namespace</li>
           <li>RI / SP tracking & optimization</li>
